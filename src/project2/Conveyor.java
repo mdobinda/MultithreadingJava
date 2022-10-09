@@ -6,7 +6,7 @@ import java.util.concurrent.locks.Condition;
 
 public class Conveyor {
     public int ID;
-    public ReentrantLock mutex = new ReentrantLock();
+    public ReentrantLock lock = new ReentrantLock();
 
     public Conveyor(int ID){
         this.ID = ID;

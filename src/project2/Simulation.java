@@ -17,7 +17,6 @@ public class Simulation {
 
     public static void main(String[] args) throws FileNotFoundException {
 
-
         System.out.println("\n* * * * * * * * * * PACKAGE MANAGEMENT FACILITY SIMULATION BEGINS * * * * * * * * * * \n");
 
         //read in config.txt file
@@ -69,6 +68,8 @@ public class Simulation {
 
         //application shutdown - different techniques for shutting down the ExecutorService are shown below
         pool.shutdown();
+
+
 
     }
 }

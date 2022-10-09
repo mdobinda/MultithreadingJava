@@ -27,6 +27,26 @@ public class Station implements Runnable {
         }
     }
 
+
+    //method for simulating Routing Station work - i.e. some time period during which the station is moving packages
+    private void doWork(){
+        //print simulation output messages
+        System.out.println("\n* * Routing Station " + ID + ": * * CURRENTLY HARD AT WORK MOVING PACKAGES.\n");
+        //decrement workload counter
+        this.work--;
+
+        this.input.Input(this.ID);
+        this.output.Output(this.ID);
+
+        System.out.printf("Routing Station %d: has %d package groups left to move.%n%n%n", this.ID, work);
+        //hold the conveyors for a random period of time to simulate work flow, i.e. sleep the thread
+        goToSleep();
+        //check if workload has reached 0 - if so, print out message indicating station is done
+        if(work == 0) {
+            System.out.printf("* * Station %d: Workload successfully completed. * *%n%n", ID);
+        }
+    }
+
     public void Input(Conveyor c){
         System.out.printf("Routing Station %d: input connection is set to conveyor number C%d%n", this.ID, c.ID);
         this.input = c;
@@ -42,47 +62,53 @@ public class Station implements Runnable {
         this.work = work;
     }
 
+
+    //the run() method - this is what a station does
     @Override
     public void run(){
+        //dump out the conveyor assignments and workload settings for the station - simulation output criteria
+        System.out.println(" \n% % % % % ROUTING STATION " + ID + " Coming Online - Initializing Conveyors % % % % % \n");
+        System.out.println("Routing Station " + ID + ": Input conveyor is set to conveyor number C" + input.ID + ".");
+        System.out.println("Routing Station " + ID + ": Output conveyor is set to conveyor number C" + output.ID + ".");
+        System.out.println("Routing Station " + ID + " Has Total Workload of " + work + " Package Groups.");
+        System.out.println("\n\n\n");
+
+
+        //run the simulation on the station for its entire workload
         while(this.work > 0){
-            if(input.mutex.tryLock()){
+            System.out.printf("Routing Station %d: Entering Lock Aquisition Phase\n", this.ID);
+            if(input.lock.tryLock()){
                 System.out.printf("Routing Station %d: holds lock on input conveyor number C%d%n", this.ID, input.ID);
 
-                if(output.mutex.tryLock()){
+                if(output.lock.tryLock()){
                     System.out.printf("Routing Station %d: holds lock on output conveyor number C%d%n", this.ID, output.ID);
-                    Pack();
+                    System.out.printf("\n\n****** Routing Station %d: Holds locks on both input conveyor C%d and output conveyor C%d******\n\n", this.ID, input.ID, output.ID);
+                    doWork();
                 } else {
                     System.out.printf("Routing Station %d: unable to lock output conveyor – releasing lock on input conveyor number C%d.%n", this.ID, output.ID);
-                    input.mutex.unlock();
+                    input.lock.unlock();
                 }
 
                 goToSleep();
             }
 
-            if(input.mutex.isHeldByCurrentThread()){
+            if(input.lock.isHeldByCurrentThread()){
                 System.out.printf("Routing Station %d: unlocks input conveyor number C%d%n", this.ID, input.ID);
-                input.mutex.unlock();
+                input.lock.unlock();
             }
 
-            if(output.mutex.isHeldByCurrentThread()){
+            if(output.lock.isHeldByCurrentThread()){
                 System.out.printf("Routing Station %d: unlocks output conveyor number C%d%n", this.ID, output.ID);
-                output.mutex.unlock();
+                output.lock.unlock();
             }
 
             goToSleep();
         }
 
-        System.out.printf("* * Station %d: Workload successfully completed. * *%n%n", this.ID);
     }
 
 
-    private void Pack(){
-        System.out.printf("Routing Station %d: *** Now moving packages. ***%n", this.ID);
-        this.input.Input(this.ID);
-        this.output.Output(this.ID);
-        this.work--;
-        System.out.printf("Routing Station %d: has %d package groups left to move.%n%n%n", this.ID, work);
-    }
+
 
 
 }
