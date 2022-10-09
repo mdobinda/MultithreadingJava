@@ -9,11 +9,13 @@ import java.util.concurrent.Executors;
 
 public class Simulation {
 
+
+    static Conveyor[] conveyors;
+    static Station[] stations;
+    static int[] workloads;
     static int numStations;
     static int MAX = 10;
-    static Station[] stations;
-    static int[] stationWorkload;
-    static Conveyor[] conveyors;
+
 
     public static void main(String[] args) throws FileNotFoundException {
 
@@ -21,11 +23,11 @@ public class Simulation {
 
         //read in config.txt file
         File file = new File("src/project2/config.txt");
-        Scanner configFile = new Scanner(file);
+        Scanner read = new Scanner(file);
 
         //save the first integer in the config.txt file as number of routing stations in the simulation run
-        numStations = configFile.nextInt();
-        stationWorkload = new int[numStations];
+        numStations = read.nextInt();
+        workloads = new int[numStations];
         stations = new Station[numStations];
 
         //create thread pool of MAX size
@@ -41,18 +43,19 @@ public class Simulation {
         //create the routing stations for this simulation run
         //loop through each routing station in the simulation
         for(int i = 0; i < numStations; i++){
-            stationWorkload[i] = configFile.nextInt();
-            System.out.printf("Routing Station %d has a total workload of %d%n", i, stationWorkload[i]);
+            workloads[i] = read.nextInt();
+            System.out.printf("Routing Station %d has a total workload of %d%n", i, workloads[i]);
             stations[i] = new Station(i);
         }
 
         System.out.printf("%n%n");
 
-        // what does this do?
+        // Give the workload each station can handle.
+
         for(int i = 0; i < numStations; i++){
             stations[i].Input((i == 0) ? conveyors[0] : conveyors[i - 1]);
             stations[i].Output((i == 0) ? conveyors[numStations - 1] : conveyors[i]);
-            stations[i].setWorkload(stationWorkload[i]);
+            stations[i].setWorkload(workloads[i]);
         }
 
         System.out.printf("%n%n");
@@ -62,7 +65,7 @@ public class Simulation {
             try {
                 pool.execute(stations[i]);
             } catch (Exception e) {
-                System.out.printf("Error processing station %d ('%s')%n", i, e.getMessage());
+                e.printStackTrace();
             }
         }
 

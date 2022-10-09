@@ -1,11 +1,11 @@
 package project2;
 
-import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
-import java.util.concurrent.locks.Condition;
 
 public class Conveyor {
     public int ID;
+
+    // Controls synchronization with conveyor
     public ReentrantLock lock = new ReentrantLock();
 
     public Conveyor(int ID){

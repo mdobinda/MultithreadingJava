@@ -42,9 +42,9 @@ public class Station implements Runnable {
         //hold the conveyors for a random period of time to simulate work flow, i.e. sleep the thread
         goToSleep();
         //check if workload has reached 0 - if so, print out message indicating station is done
-        if(work == 0) {
-            System.out.printf("* * Station %d: Workload successfully completed. * *%n%n", ID);
-        }
+//        if(work == 0) {
+//            System.out.printf("* * Station %d: Workload successfully completed. * *%n%n", ID);
+//        }
     }
 
     public void Input(Conveyor c){
@@ -68,11 +68,6 @@ public class Station implements Runnable {
     public void run(){
         //dump out the conveyor assignments and workload settings for the station - simulation output criteria
         System.out.println(" \n% % % % % ROUTING STATION " + ID + " Coming Online - Initializing Conveyors % % % % % \n");
-        System.out.println("Routing Station " + ID + ": Input conveyor is set to conveyor number C" + input.ID + ".");
-        System.out.println("Routing Station " + ID + ": Output conveyor is set to conveyor number C" + output.ID + ".");
-        System.out.println("Routing Station " + ID + " Has Total Workload of " + work + " Package Groups.");
-        System.out.println("\n\n\n");
-
 
         //run the simulation on the station for its entire workload
         while(this.work > 0){
@@ -82,14 +77,12 @@ public class Station implements Runnable {
 
                 if(output.lock.tryLock()){
                     System.out.printf("Routing Station %d: holds lock on output conveyor number C%d%n", this.ID, output.ID);
-                    System.out.printf("\n\n****** Routing Station %d: Holds locks on both input conveyor C%d and output conveyor C%d******\n\n", this.ID, input.ID, output.ID);
                     doWork();
                 } else {
                     System.out.printf("Routing Station %d: unable to lock output conveyor – releasing lock on input conveyor number C%d.%n", this.ID, output.ID);
                     input.lock.unlock();
                 }
 
-                goToSleep();
             }
 
             if(input.lock.isHeldByCurrentThread()){
@@ -105,6 +98,7 @@ public class Station implements Runnable {
             goToSleep();
         }
 
+        System.out.printf("%n%n* * Station %d: Workload successfully completed. * *%n%n", this.ID);
     }
 
 
