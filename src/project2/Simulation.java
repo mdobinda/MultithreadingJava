@@ -9,7 +9,7 @@ import java.util.concurrent.Executors;
 
 public class Simulation {
 
-    private static String CONFIG_FILE = "C:\\Users\\Minnie\\Desktop\\MultithreadingJava\\src\\project2\\config.txt";
+    private static String CONFIG_FILE = "src/project2/config.txt";
 
 
 
