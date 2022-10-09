@@ -9,70 +9,67 @@ import java.util.concurrent.Executors;
 
 public class Simulation {
 
-    private static String CONFIG_FILE = "src/project2/config.txt";
-
-
-
-    static int n_stations;
+    static int numStations;
+    static int MAX = 10;
     static Station[] stations;
-    static int[] station_workload;
+    static int[] stationWorkload;
     static Conveyor[] conveyors;
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws FileNotFoundException {
 
-        FileReader fr = new FileReader("C:\\Users\\Minnie\\Desktop\\MultithreadingJava\\src\\project2\\andres.txt");
-        int j;
-        while((j=fr.read())!=-1){
-            System.out.print((char) j);
-        }
 
-        File infile;
-        Scanner inf_scanner;
-        try {
-            infile = new File(CONFIG_FILE);
-            inf_scanner = new Scanner(infile);
-        } catch (Exception e) {
-            System.out.printf("Unable to open input file '%s', exiting.%n", CONFIG_FILE);
-            return;
-        }
+        System.out.println("\n* * * * * * * * * * PACKAGE MANAGEMENT FACILITY SIMULATION BEGINS * * * * * * * * * * \n");
 
-        n_stations = inf_scanner.nextInt();
-        station_workload = new int[n_stations];
-        conveyors = new Conveyor[n_stations];
-        stations = new Station[n_stations];
+        //read in config.txt file
+        File file = new File("src/project2/config.txt");
+        Scanner configFile = new Scanner(file);
 
-        for(int i = 0; i < n_stations; i++){
+        //save the first integer in the config.txt file as number of routing stations in the simulation run
+        numStations = configFile.nextInt();
+        stationWorkload = new int[numStations];
+        stations = new Station[numStations];
+
+        //create thread pool of MAX size
+        ExecutorService pool = Executors.newFixedThreadPool(MAX);
+
+        //create an array of conveyor objects
+        conveyors = new Conveyor[numStations];
+        for(int i = 0; i < numStations; i++){
             conveyors[i] = new Conveyor(i);
         }
 
-        System.out.printf("* * * SIMULATION BEGINS * * *%n%n");
 
-        for(int i = 0; i < n_stations; i++){
-            station_workload[i] = inf_scanner.nextInt();
-            System.out.printf("Routing Station %d has a total workload of %d%n", i, station_workload[i]);
+        //create the routing stations for this simulation run
+        //loop through each routing station in the simulation
+        for(int i = 0; i < numStations; i++){
+            stationWorkload[i] = configFile.nextInt();
+            System.out.printf("Routing Station %d has a total workload of %d%n", i, stationWorkload[i]);
             stations[i] = new Station(i);
         }
 
         System.out.printf("%n%n");
 
-        for(int i = 0; i < n_stations; i++){
+        // what does this do?
+        for(int i = 0; i < numStations; i++){
             stations[i].Input((i == 0) ? conveyors[0] : conveyors[i - 1]);
-            stations[i].Output((i == 0) ? conveyors[n_stations - 1] : conveyors[i]);
-            stations[i].setWorkload(station_workload[i]);
+            stations[i].Output((i == 0) ? conveyors[numStations - 1] : conveyors[i]);
+            stations[i].setWorkload(stationWorkload[i]);
         }
 
         System.out.printf("%n%n");
 
-        ExecutorService simThreadPool = Executors.newFixedThreadPool(n_stations);
-        for(int i = 0; i < n_stations; i++){
+        //start threads executing using the ExecutorService object
+        for(int i = 0; i < numStations; i++){
             try {
-                simThreadPool.execute(stations[i]);
+                pool.execute(stations[i]);
             } catch (Exception e) {
                 System.out.printf("Error processing station %d ('%s')%n", i, e.getMessage());
             }
         }
 
-        simThreadPool.shutdown();
+        //application shutdown - different techniques for shutting down the ExecutorService are shown below
+        pool.shutdown();
+
     }
 }
 

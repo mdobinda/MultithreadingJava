@@ -3,6 +3,9 @@ package project2;
 import java.util.Random;
 
 public class Station implements Runnable {
+
+    //define all the RoutingStation attributes
+    //protected
     private int work;
     public int ID;
     private Conveyor input, output;
@@ -10,6 +13,18 @@ public class Station implements Runnable {
     public Station(int ID){
         this.ID = ID;
         this.work = 0;
+    }
+
+    //method for threads to go to sleep
+    //note: a sleeping thread in java maintains all resources allocated to it. Including locks
+    //Locks are not relinquished during a sleep cycle
+    private void goToSleep(){
+        try {
+            Random gen = new Random();
+            Thread.sleep(1000 * gen.nextInt(3));
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     public void Input(Conveyor c){
@@ -41,7 +56,7 @@ public class Station implements Runnable {
                     input.mutex.unlock();
                 }
 
-                sleepRand();
+                goToSleep();
             }
 
             if(input.mutex.isHeldByCurrentThread()){
@@ -54,11 +69,12 @@ public class Station implements Runnable {
                 output.mutex.unlock();
             }
 
-            sleepRand();
+            goToSleep();
         }
 
         System.out.printf("* * Station %d: Workload successfully completed. * *%n%n", this.ID);
     }
+
 
     private void Pack(){
         System.out.printf("Routing Station %d: *** Now moving packages. ***%n", this.ID);
@@ -68,12 +84,5 @@ public class Station implements Runnable {
         System.out.printf("Routing Station %d: has %d package groups left to move.%n%n%n", this.ID, work);
     }
 
-    private void sleepRand(){
-        try {
-            Random gen = new Random();
-            Thread.sleep(1000 * gen.nextInt(3));
-        } catch (Exception e) {
-            System.out.printf("thread sleep exception: %s%n", e.getMessage());
-        }
-    }
+
 }
