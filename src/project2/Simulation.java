@@ -5,16 +5,26 @@ import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+
+
 public class Simulation {
 
-    private static String CONFIG_FILE = "config.txt";
+    private static String CONFIG_FILE = "C:\\Users\\Minnie\\Desktop\\MultithreadingJava\\src\\project2\\config.txt";
+
+
 
     static int n_stations;
     static Station[] stations;
     static int[] station_workload;
     static Conveyor[] conveyors;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
+
+        FileReader fr = new FileReader("C:\\Users\\Minnie\\Desktop\\MultithreadingJava\\src\\project2\\andres.txt");
+        int j;
+        while((j=fr.read())!=-1){
+            System.out.print((char) j);
+        }
 
         File infile;
         Scanner inf_scanner;
