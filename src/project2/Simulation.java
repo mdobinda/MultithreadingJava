@@ -5,7 +5,9 @@ import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-
+/*Restriction 4: You must use an ExecutorService object to manage a FixedThreadPool(MAX),
+where MAX is the upper limit on the number of stations which we’ll set to be 10 (see below
+under Input Specification).*/
 
 public class Simulation {
 
@@ -26,6 +28,8 @@ public class Simulation {
 
         //save the first integer in the config.txt file as number of routing stations in the simulation run
         numStations = read.nextInt();
+
+        //credate arrays
         workloads = new int[numStations];
         stations = new Station[numStations];
 
@@ -58,9 +62,9 @@ public class Simulation {
            // stations[i].setOnline();
         }
 
-        System.out.printf("%n%n");
+        System.out.printf("%n%n%n");
 
-        //start threads executing using the ExecutorService object
+        //start threads executing using the ExecutorService object i.e executes pooled threads
         for(int i = 0; i < numStations; i++){
             try {
                 pool.execute(stations[i]);
@@ -72,7 +76,8 @@ public class Simulation {
         //application shutdown - different techniques for shutting down the ExecutorService are shown below
         pool.shutdown();
 
-        //print statements that checks if thread pool is fully terminanted and declares simulation is finished
+        //print statements that checks if thread pool is fully terminanted and declares simulation is finished using the executor interface
+        //Returns true if all tasks have completed following shut down. Note that isTerminated is never true unless either shutdown or shutdownNow was called first.
 
         while(true) {
             if (pool.isTerminated()) {
