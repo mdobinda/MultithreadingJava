@@ -28,10 +28,10 @@ public class Station implements Runnable {
         }
     }
 
-
     //method for simulating Routing Station work - i.e. some time period during which the station is moving packages
     private void doWork(){
         //print simulation output messages
+        /* Output specification #10*/
         System.out.println("\n* * Routing Station " + ID + ": * * CURRENTLY HARD AT WORK MOVING PACKAGES.\n");
         //decrement workload counter
         this.work--;
@@ -39,27 +39,35 @@ public class Station implements Runnable {
         this.input.Input(this.ID);
         this.output.Output(this.ID);
 
+        /* Output specification #11*/
         System.out.printf("Routing Station %d: has %d package groups left to move.%n%n%n", this.ID, work);
+        /* Output specification #9*/
 
         if (work == 0) {
-            System.out.printf("* * Routing Station %d: going offline - work completed! * *%n%n", this.ID);
+            System.out.printf("# # Routing Station %d: Workload successfully completed. * *  Station %d preparing to go offline. # # %n%n", ID, ID);
         }
         //hold the conveyors for a random period of time to simulate work flow, i.e. sleep the thread
         goToSleep();
     }
 
+
+    /* Output specification #1 */
     public void Input(Conveyor c){
-        System.out.printf("Routing Station %d: input connection is set to conveyor number C%d%n", this.ID, c.ID);
+        System.out.printf("Routing Station %d: Input conveyor set to conveyor number C%d.%n", this.ID, c.ID);
         this.input = c;
     }
 
+    /* Output specification #2 */
     public void Output(Conveyor c){
-        System.out.printf("Routing Station %d: output connection is set to conveyor number C%d%n", this.ID, c.ID);
+        System.out.printf("Routing Station %d: Output conveyor set to conveyor number C%d.%n", this.ID, c.ID);
         this.output = c;
     }
 
+    /* Output specification #3 */
+    // Routing Station X Has Total Workload of n Package Groups.
+
     public void setWorkload(int work){
-        System.out.printf("Routing Station %d: Workload set. Station %d has a total of %d package groups to move.%n", this.ID, this. ID, this.work);
+        System.out.printf("Routing Station %d: Workload set. %nRouting Station %d has a total workload of %d package groups.%n", this.ID, this. ID, this.work);
         this.work = work;
     }
 
@@ -76,26 +84,31 @@ public class Station implements Runnable {
         //run the simulation on the station for its entire workload
         while(this.work > 0){
             System.out.printf("Routing Station %d: Entering Lock Aquisition Phase\n", this.ID);
+            /* Output specification #4 */
             if(input.lock.tryLock()){
-                System.out.printf("Routing Station %d: holds lock on input conveyor number C%d%n", this.ID, input.ID);
-
+                System.out.printf("Routing Station %d: holds lock on input conveyor C%d.%n", this.ID, input.ID);
+                /* Output specification #5 */
                 if(output.lock.tryLock()){
-                    System.out.printf("Routing Station %d: holds lock on output conveyor number C%d%n", this.ID, output.ID);
+                    System.out.printf("Routing Station %d: holds lock on output conveyor C%d.%n", this.ID, output.ID);
                     doWork();
                 } else {
-                    System.out.printf("Routing Station %d: unable to lock output conveyor – releasing lock on input conveyor number C%d.%n", this.ID, output.ID);
+
+                   /* Output specification #8 */
+                    System.out.printf("Routing Station %d: unable to lock output conveyor C%d.%n", this.ID, output.ID);
+                    System.out.printf("SYNCHRONIZATION ISSUE: Station %d currently holds the lock on output conveyor %d – releasing lock on input conveyor C%d.%n", this.ID, output.ID, input.ID);
+
                     input.lock.unlock();
                 }
 
             }
-
+            /* Output specification #6 */
             if(input.lock.isHeldByCurrentThread()){
-                System.out.printf("Routing Station %d: unlocks input conveyor number C%d%n", this.ID, input.ID);
+                System.out.printf("Routing Station %d: unlocks/releases input conveyor C%d.%n", this.ID, input.ID);
                 input.lock.unlock();
             }
-
+            /* Output specification #7 */
             if(output.lock.isHeldByCurrentThread()){
-                System.out.printf("Routing Station %d: unlocks output conveyor number C%d%n", this.ID, output.ID);
+                System.out.printf("Routing Station %d: unlocks/releases output conveyor C%d.%n", this.ID, output.ID);
                 output.lock.unlock();
             }
 
