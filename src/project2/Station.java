@@ -42,15 +42,10 @@ public class Station implements Runnable {
         System.out.printf("Routing Station %d: has %d package groups left to move.%n%n%n", this.ID, work);
 
         if (work == 0) {
-       //     System.out.println(" GOING OFFLINE TEST TEST TEST WORK COMPLETED");
             System.out.printf("* * Routing Station %d: going offline - work completed! * *%n%n", this.ID);
         }
         //hold the conveyors for a random period of time to simulate work flow, i.e. sleep the thread
         goToSleep();
-        //check if workload has reached 0 - if so, print out message indicating station is done
-//        if(work == 0) {
-//            System.out.printf("* * Station %d: Workload successfully completed. * *%n%n", ID);
-//        }
     }
 
     public void Input(Conveyor c){
@@ -71,7 +66,6 @@ public class Station implements Runnable {
     public void setOnline(){
         System.out.printf("Routing Station %d: Now Online %n%n", this.ID);
     }
-
 
     //the run() method - this is what a station does
     @Override
@@ -111,8 +105,6 @@ public class Station implements Runnable {
         System.out.printf("# # # # Routing Station %d: Workload successfully completed! * * * Routing Station %d preparing to go offline. # # # # %n%n", ID, ID);
 
     }
-
-
 
 
 

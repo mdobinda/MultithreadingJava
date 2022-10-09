@@ -9,7 +9,6 @@ import java.util.concurrent.Executors;
 
 public class Simulation {
 
-
     static Conveyor[] conveyors;
     static Station[] stations;
     static int[] workloads;
@@ -72,6 +71,16 @@ public class Simulation {
 
         //application shutdown - different techniques for shutting down the ExecutorService are shown below
         pool.shutdown();
+
+        //print statements that checks if thread pool is fully terminanted and declares simulation is finished
+
+        while(true) {
+            if (pool.isTerminated()) {
+                System.out.println("* * * * * * * * * * ALL WORKLOADS COMPLETE * * * PACKAGE MANAGEMENT FACILITY SIMULATION TERMINATES * * * * * * * * * *\n\n");
+                System.out.println("* % * % * % SIMULATION ENDS % * % * % *");
+                break;
+            }
+        }
 
     }
 }
