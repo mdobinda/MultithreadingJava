@@ -42,13 +42,13 @@ public class Simulation {
 
         //create the routing stations for this simulation run
         //loop through each routing station in the simulation
+        System.out.println("The parameters for this simulation run are: \n");
         for(int i = 0; i < numStations; i++){
             workloads[i] = read.nextInt();
             System.out.printf("Routing Station %d has a total workload of %d%n", i, workloads[i]);
             stations[i] = new Station(i);
         }
-
-        System.out.printf("%n%n");
+        System.out.println("\n* * * * * * * * * * Routing Stations are being assigned workloads * * * * * * * * * * \n");
 
         // Give the workload each station can handle.
 
@@ -56,6 +56,7 @@ public class Simulation {
             stations[i].Input((i == 0) ? conveyors[0] : conveyors[i - 1]);
             stations[i].Output((i == 0) ? conveyors[numStations - 1] : conveyors[i]);
             stations[i].setWorkload(workloads[i]);
+           // stations[i].setOnline();
         }
 
         System.out.printf("%n%n");
@@ -71,8 +72,6 @@ public class Simulation {
 
         //application shutdown - different techniques for shutting down the ExecutorService are shown below
         pool.shutdown();
-
-
 
     }
 }

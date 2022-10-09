@@ -8,7 +8,8 @@ public class Station implements Runnable {
     //protected
     private int work;
     public int ID;
-    private Conveyor input, output;
+    private Conveyor input;
+    private Conveyor output;
 
     public Station(int ID){
         this.ID = ID;
@@ -39,6 +40,11 @@ public class Station implements Runnable {
         this.output.Output(this.ID);
 
         System.out.printf("Routing Station %d: has %d package groups left to move.%n%n%n", this.ID, work);
+
+        if (work == 0) {
+       //     System.out.println(" GOING OFFLINE TEST TEST TEST WORK COMPLETED");
+            System.out.printf("* * Routing Station %d: going offline - work completed! * *%n%n", this.ID);
+        }
         //hold the conveyors for a random period of time to simulate work flow, i.e. sleep the thread
         goToSleep();
         //check if workload has reached 0 - if so, print out message indicating station is done
@@ -62,12 +68,16 @@ public class Station implements Runnable {
         this.work = work;
     }
 
+    public void setOnline(){
+        System.out.printf("Routing Station %d: Now Online %n%n", this.ID);
+    }
+
 
     //the run() method - this is what a station does
     @Override
     public void run(){
         //dump out the conveyor assignments and workload settings for the station - simulation output criteria
-        System.out.println(" \n% % % % % ROUTING STATION " + ID + " Coming Online - Initializing Conveyors % % % % % \n");
+        System.out.println("% % % % % ROUTING STATION " + ID + " Coming Online - Initializing Conveyors % % % % % \n");
 
         //run the simulation on the station for its entire workload
         while(this.work > 0){
@@ -98,7 +108,8 @@ public class Station implements Runnable {
             goToSleep();
         }
 
-        System.out.printf("%n%n* * Station %d: Workload successfully completed. * *%n%n", this.ID);
+        System.out.printf("# # # # Routing Station %d: Workload successfully completed! * * * Routing Station %d preparing to go offline. # # # # %n%n", ID, ID);
+
     }
 
 
