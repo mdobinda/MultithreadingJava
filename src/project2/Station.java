@@ -67,7 +67,7 @@ public class Station implements Runnable {
 
     /* Output specification #3 */
     public void setWorkload(int work){
-        System.out.printf("Routing Station %d: Workload set. %nRouting Station %d has a total workload of %d package groups.%n", this.stationID, this.stationID, this.workLoad);
+        System.out.printf("Routing Station %d: Workload set. %n", this.stationID);
         this.workLoad = work;
     }
 
