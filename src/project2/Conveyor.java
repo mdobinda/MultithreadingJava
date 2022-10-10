@@ -1,5 +1,13 @@
 package project2;
 
+/*
+Name: Magdalena Dobinda
+Course: CNT 4714 Fall 2022
+Assignment title: Project 2 – Multi-threaded programming in Java
+Date: October 8th, 2022
+Class: Enterprise Computing
+*/
+
 import java.util.concurrent.locks.ReentrantLock;
 
 public class Conveyor {

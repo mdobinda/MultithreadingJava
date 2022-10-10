@@ -1,5 +1,13 @@
 package project2;
 
+/*
+Name: Magdalena Dobinda
+Course: CNT 4714 Fall 2022
+Assignment title: Project 2 – Multi-threaded programming in Java
+Date: October 8th, 2022
+Class: Enterprise Computing
+*/
+
 import java.io.*;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
@@ -9,10 +17,10 @@ import java.util.concurrent.Executors;
 where MAX is the upper limit on the number of stations which we’ll set to be 10 (see below
 under Input Specification).*/
 
-public class Simulation {
+public class PackageManagementFacilitySimulator {
 
     static Conveyor[] conveyors;
-    static Station[] stations;
+    static RoutingStation[] stations;
     static int[] workloads;
     static int numStations;
     static int MAX = 10;
@@ -31,7 +39,7 @@ public class Simulation {
 
         //credate arrays
         workloads = new int[numStations];
-        stations = new Station[numStations];
+        stations = new RoutingStation[numStations];
 
         //create thread pool of MAX size
         ExecutorService pool = Executors.newFixedThreadPool(MAX);
@@ -49,7 +57,7 @@ public class Simulation {
         for(int i = 0; i < numStations; i++){
             workloads[i] = read.nextInt();
             System.out.printf("Routing Station %d has a total workload of %d%n", i, workloads[i]);
-            stations[i] = new Station(i);
+            stations[i] = new RoutingStation(i);
         }
         System.out.println("\n* * * * * * * * * * Routing Stations are being assigned workloads * * * * * * * * * * \n");
 

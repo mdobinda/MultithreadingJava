@@ -1,11 +1,20 @@
 package project2;
 
+/*
+Name: Magdalena Dobinda
+Course: CNT 4714 Fall 2022
+Assignment title: Project 2 – Multi-threaded programming in Java
+Date: October 8th, 2022
+Class: Enterprise Computing
+*/
+
+
 import java.util.Random;
 
 /* Restriction #5: Your station threads must implement the Runnable interface and not extend the Thread
 class in order to utilize the ExecutorService object mentioned in 4 above.*/
 
-public class Station implements Runnable {
+public class RoutingStation implements Runnable {
 
     //define all the RoutingStation attributes
     //protected
@@ -14,7 +23,7 @@ public class Station implements Runnable {
     protected Conveyor input;
     protected Conveyor output;
 
-    public Station(int ID){
+    public RoutingStation(int ID){
         this.stationID = ID;
     }
 

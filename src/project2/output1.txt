@@ -1,5 +1,5 @@
-C:\Users\Minnie\.jdks\semeru-11.0.17\bin\java.exe "-javaagent:C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2021.2.2\lib\idea_rt.jar=51186:C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2021.2.2\bin" -Dfile.encoding=UTF-8 -classpath C:\Users\Minnie\Desktop\MultithreadingJava\out\production\MultithreadingJava project2.Simulation
-Console output is saving to: C:\Users\Minnie\Desktop\MultithreadingJava\src\project2\logs
+C:\Users\Minnie\.jdks\semeru-11.0.17\bin\java.exe "-javaagent:C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2021.2.2\lib\idea_rt.jar=51186:C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2021.2.2\bin" -Dfile.encoding=UTF-8 -classpath C:\Users\Minnie\Desktop\MultithreadingJava\out\production\MultithreadingJava project2.PackageManagementFacilitySimulator
+Console output is saving to: C:\Users\Minnie\Desktop\MultithreadingJava\src\project2
 
 * * * * * * * * * * PACKAGE MANAGEMENT FACILITY SIMULATION BEGINS * * * * * * * * * * 
 
